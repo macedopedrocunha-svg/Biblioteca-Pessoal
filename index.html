@@ -1,133 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Estante de Histórias</title>
-    <style>
-        /* Estilo Dark inspirado em bibliotecas digitais */
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MINHAS HISTÓRIAS</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noite:#140e0b; --nogueira:#2a1a12; --madeira:#6b4226; --madeira-clara:#8a5a34;
+  --papel:#efe3c8; --latao:#c9a24b; --texto:#e9dcc3; --suave:#b8a98d;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; color:var(--texto);
+  font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif; font-size:1.15rem;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(201,162,75,.18), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 2px, transparent 2px 46px),
+    var(--nogueira);
+  background-color:var(--nogueira);
+}
+header{text-align:center; padding:56px 20px 28px}
+h1{font-size:clamp(2.4rem,7vw,4.4rem); font-weight:700; margin:0; color:var(--papel); letter-spacing:.01em; text-shadow:0 2px 0 #000, 0 0 30px rgba(201,162,75,.25)}
+header p{margin:12px auto 0; max-width:34ch; color:var(--suave); font-style:italic; font-size:1.25rem}
 
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+.armario{max-width:980px; margin:24px auto 60px; padding:26px 26px 0; background:var(--noite); border:14px solid var(--madeira); border-radius:6px; box-shadow:inset 0 0 40px #000, 0 30px 60px rgba(0,0,0,.6)}
+.prateleira{display:flex; align-items:flex-end; justify-content:center; gap:clamp(14px,4vw,44px); flex-wrap:wrap; padding:20px 10px 0; min-height:400px; position:relative}
+.prateleira::after{content:""; position:absolute; left:-26px; right:-26px; bottom:0; height:22px; background:linear-gradient(var(--madeira-clara),var(--madeira)); box-shadow:0 -4px 12px rgba(0,0,0,.5), 0 6px 10px rgba(0,0,0,.6)}
+.prateleira > *{margin-bottom:22px; position:relative; z-index:1}
 
-        h1 { color: #9903c36a; margin-bottom: 10px; }
+.livro{display:block; width:200px; height:300px; text-decoration:none; color:inherit; perspective:900px; outline-offset:6px}
+.livro .corpo{position:absolute; inset:0; border-radius:3px 8px 8px 3px; overflow:hidden; transform-origin:left center; transition:transform .45s ease, box-shadow .45s ease; box-shadow:-6px 8px 14px rgba(0,0,0,.6)}
+.livro .corpo::before{content:""; position:absolute; left:0; top:0; bottom:0; width:16px; background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(255,255,255,.12) 60%,rgba(0,0,0,.25)); z-index:2}
+.livro:hover .corpo,.livro:focus-visible .corpo{transform:translateY(-16px) rotateY(-22deg); box-shadow:-14px 18px 22px rgba(0,0,0,.65)}
+.livro:focus-visible{outline:2px solid var(--latao)}
+.capa{position:absolute; inset:0; padding:34px 22px 26px 34px; display:flex; flex-direction:column; justify-content:space-between; text-align:center}
+.capa:has(img){padding:0}
+.capa img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.capa h2{margin:0; font-size:1.9rem; line-height:1.05; font-weight:700}
+.capa small{font-size:1rem; font-style:italic; opacity:.85}
+.ornamento{height:2px; width:60%; margin:0 auto; background:currentColor; opacity:.6}
 
-        /* A Estante (Grid) */
-        .estante {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1000px;
-        }
+.amaldicoado{background:radial-gradient(circle at 50% 35%,#6d1420,#2b0509 75%); color:#e7c77a}
+.amaldicoado .capa{border:2px solid rgba(231,199,122,.45); outline:1px solid rgba(231,199,122,.25); outline-offset:-10px}
+.wasted{background:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0 2px,transparent 2px 5px),linear-gradient(170deg,#23332c,#0d1512); color:#c7d8c0}
+.wasted h2{letter-spacing:.12em; font-size:2.1rem}
 
-        /* O Card do Livro */
-        .livro-card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid #333;
-            display: flex;
-            flex-direction: column;
-        }
+.vazio{width:200px; height:300px; border:2px dashed rgba(201,162,75,.35); border-radius:6px; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px; color:var(--suave); font-style:italic}
 
-        .livro-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            border-color: #3498db;
-        }
+.legenda{display:none}
+.titulos{display:flex; justify-content:center; gap:clamp(14px,4vw,44px); flex-wrap:wrap; max-width:980px; margin:-28px auto 70px; padding:0 20px}
+.titulos div{width:200px; text-align:center}
+.titulos b{display:block; color:var(--papel); font-size:1.25rem}
+.titulos span{color:var(--suave); font-size:1.02rem; line-height:1.35; display:block; margin-top:4px}
+.titulos .espaco{visibility:hidden}
 
-        /* Container da Capa */
-        .capa-container {
-            width: 100%;
-            height: 320px; /* Proporção de capa de livro */
-            background-color: #2c3e50;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+footer{text-align:center; color:var(--suave); padding:0 20px 40px; font-style:italic}
 
-        .capa-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
-        }
-
-        .capa-placeholder {
-            font-weight: bold;
-            color: #554b5b5c;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* Info do Livro */
-        .livro-info {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .livro-info h2 {
-            font-size: 1.1rem;
-            margin: 0 0 8px 0;
-            color: #fff;
-        }
-
-        .livro-info p {
-            font-size: 0.85rem;
-            color: #bbb;
-            margin: 0;
-            line-height: 1.4;
-        }
-    </style>
+@media (max-width:520px){.armario{border-width:10px; padding:16px 10px 0}.titulos{margin-top:-10px}}
+@media (prefers-reduced-motion:reduce){.livro .corpo{transition:none}}
+</style>
 </head>
 <body>
-
 <header>
-    <h1>Minha Biblioteca Digital</h1>
-    <p>Clique na capa para ler a história completa no Google Docs.</p>
+  <h1>MINHAS HISTÓRIAS</h1>
+  <p>Escolha um livro da prateleira para ler a história completa.</p>
 </header>
 
-<div class="estante">
+<main class="armario">
+  <div class="prateleira" id="prateleira"></div>
+</main>
+<div class="titulos" id="titulos"></div>
+<footer>Mais histórias chegam em breve.</footer>
 
-    <a href="https://docs.google.com/document/d/1Gw4U7e1amEd6D_PiHD2coxOfe6AfCgS8Qp6jdrw4C6E/edit?usp=sharing" target="_blank" class="livro-card">
-        <div class="capa-container">
-            <img src="capa-cursed.jpg" alt="Capa Cursed Book">
-            <img src="https://via.placeholder.com/220x320?text=O+Livro+Amaldiçoado" alt="Capa O Livro Amaldiçoado">
-        </div>
-        <div class="livro-info">
-            <h2>O Livro Amaldiçoado</h2>
-            <p>Uma sinopse instigante sobre mistérios e sombras.</p>
-        </div>
-    </a>
-
-    <a href="https://docs.google.com/document/d/12poHRCAghAmmvW-oyXqn0ee-vBwbsGB8sE13vbeX3lU/edit?usp=sharing" target="_blank" class="livro-card">
-        <div class="capa-container">
-            <img src="capa-wasted.jpg" alt="Capa Wasted">
-            <img src="https://via.placeholder.com/220x320?text=Wasted" alt="Capa Wasted">
-        </div>
-        <div class="livro-info">
-            <h2>Wasted</h2>
-            <p>Uma transmissão desesperada vinda de um lugar esquecido.</p>
-        </div>
-    </a>
-
-</div>
-
+<script>
+  // Para adicionar um livro, inclua um item aqui.
+  // "imagem" é opcional: URL ou data URI da capa. Sem imagem, a capa desenhada é usada.
+  const livros = [
+    { titulo:"O Livro Amaldiçoado", sinopse:"Mistérios e sombras em uma história que não deveria ser lida.", classe:"amaldicoado", subtitulo:"mistério", imagem:"capa-cursed.jpg",
+      link:"https://docs.google.com/document/d/1Gw4U7e1amEd6D_PiHD2coxOfe6AfCgS8Qp6jdrw4C6E/edit?usp=sharing" },
+    { titulo:"Wasted", sinopse:"Uma transmissão desesperada vinda de um lugar esquecido.", classe:"wasted", subtitulo:"transmissão", imagem:"capa-wasted.jpg",
+      link:"https://docs.google.com/document/d/12poHRCAghAmmvW-oyXqn0ee-vBwbsGB8sE13vbeX3lU/edit?usp=sharing" }
+  ];
+  const p = document.getElementById('prateleira'), t = document.getElementById('titulos');
+  const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  livros.forEach(l => {
+    const a = document.createElement('a');
+    a.className = 'livro'; a.href = l.link; a.target = '_blank'; a.rel = 'noopener';
+    a.setAttribute('aria-label', 'Ler ' + l.titulo + ' no Google Docs');
+    a.innerHTML = `<div class="corpo ${l.classe}"><div class="capa">` +
+      (l.imagem ? `<img src="${esc(l.imagem)}" alt="Capa de ${esc(l.titulo)}">`
+                : `<div class="ornamento"></div><h2>${esc(l.titulo)}</h2><small>${esc(l.subtitulo)}</small>`) +
+      `</div></div>`;
+    p.appendChild(a);
+    const d = document.createElement('div');
+    d.innerHTML = `<b>${esc(l.titulo)}</b><span>${esc(l.sinopse)}</span>`;
+    t.appendChild(d);
+  });
+  const v = document.createElement('div');
+  v.className = 'vazio'; v.textContent = 'Espaço para a próxima história';
+  p.appendChild(v);
+  const e = document.createElement('div'); e.className = 'espaco'; e.innerHTML = '<b>.</b><span>.</span>';
+  t.appendChild(e);
+</script>
 </body>
 </html>
